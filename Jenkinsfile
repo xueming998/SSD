@@ -23,5 +23,11 @@ pipeline {
        			 dependencyCheck additionalArguments: '--format HTML --format XML --suppression suppression.xml', odcInstallation: 'Default'
       			}
     		}
+     }
+	post{
+		always{
+			junit testResults: "logs/unitreport.xml"
+		}
+		
 	}
 }
