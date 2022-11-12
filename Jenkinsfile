@@ -14,20 +14,13 @@ pipeline {
 		stage('Test') {
 			steps {
                 sh './vendor/bin/phpunit --log-junit logs/unitreport.xml -c tests/phpunit.xml tests'
-            }
+            		}
 		}
 		
-		stage('OWASP DependencyCheck') {
-      			steps {
-          		/* --suppression suppression.xml ---- is use to remove false positive */
-       			 dependencyCheck additionalArguments: '--format HTML --format XML --suppression suppression.xml', odcInstallation: 'Default'
-      			}
-    		}
      }
-	post{
-		always{
-			junit testResults: 'logs/unitreport.xml'
-		}
-		
-	}
+     post {
+	always {
+		junit testResults: 'logs/unitreport.xml'
+	}	
+     }
 }
