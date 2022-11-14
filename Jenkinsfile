@@ -1,21 +1,24 @@
 pipeline {
-    agent any
-    stages {
-        stage('Checkout SCM') {
-            steps {
-              
-            }
-        }
+  agent any
+  stages {
 
-        stage('OWASP DependencyCheck') {
-            steps {
-                dependencyCheck additionalArguments: '--format HTML --format XML --suppression suppression.xml', odcInstallation: 'Default'
-            }
-        }
+
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
     }
-    post {
-        success {
-            dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-        }
+
+    stage('OWASP DependencyCheck') {
+      steps {
+        dependencyCheck additionalArguments: '--format HTML --format XML', odcInstallation: 'Default'
+      }
     }
+  }
+
+  post {
+    success {
+      dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+    }
+  }
 }
